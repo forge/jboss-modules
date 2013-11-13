@@ -22,7 +22,7 @@
 
 package org.jboss.modules;
 
-import __redirected.__JAXPRedirected;
+import static org.jboss.modules.SecurityActions.setContextClassLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,12 +40,10 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.util.logging.LogManager;
 
-import java.util.jar.Manifest;
 import org.jboss.modules.log.JDKModuleLogger;
-
-import static org.jboss.modules.SecurityActions.setContextClassLoader;
 
 /**
  * The main entry point of JBoss Modules when run as a JAR on the command line.
@@ -374,11 +372,6 @@ public final class Main {
             moduleIdentifier = ModuleIdentifier.fromString(nameArgument);
         }
         Module.initBootModuleLoader(loader);
-        if (jaxpModuleIdentifier != null) {
-            __JAXPRedirected.changeAll(jaxpModuleIdentifier, Module.getBootModuleLoader());
-        } else {
-            __JAXPRedirected.changeAll(moduleIdentifier, Module.getBootModuleLoader());
-        }
 
         final Module module;
         try {

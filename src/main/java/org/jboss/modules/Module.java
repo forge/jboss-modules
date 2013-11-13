@@ -53,8 +53,6 @@ import org.jboss.modules.filter.PathFilters;
 import org.jboss.modules.log.ModuleLogger;
 import org.jboss.modules.log.NoopModuleLogger;
 
-import __redirected.__JAXPRedirected;
-
 /**
  * A module is a unit of classes and other resources, along with the specification of what is imported and exported
  * by this module from and to other modules.  Modules are created by {@link ModuleLoader}s which build modules from
@@ -116,6 +114,7 @@ public final class Module {
         systemPaths = list.toArray(list.toArray(new String[list.size()]));
 
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Override
             public Void run() {
                 try {
                     URL.setURLStreamHandlerFactory(ModularURLStreamHandlerFactory.INSTANCE);
@@ -127,8 +126,6 @@ public final class Module {
                 } catch (Throwable t) {
                     // todo log a warning or something
                 }
-
-                __JAXPRedirected.initAll();
 
                 return null;
             }
@@ -708,6 +705,7 @@ public final class Module {
             private Iterator<LocalLoader> loaderIterator;
             private Resource next;
 
+            @Override
             public boolean hasNext() {
                 while (next == null) {
                     if (resourceIterator != null) {
@@ -741,6 +739,7 @@ public final class Module {
                 return true;
             }
 
+            @Override
             public Resource next() {
                 if (! hasNext()) throw new NoSuchElementException();
                 try {
@@ -750,6 +749,7 @@ public final class Module {
                 }
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
@@ -987,11 +987,13 @@ public final class Module {
             hashCode = ((resourceFilters.hashCode() * 13 + classFilters.hashCode()) * 13 + filters.hashCode()) * 13 + module.hashCode();
         }
 
-        public int hashCode() {
+        @Override
+      public int hashCode() {
             return hashCode;
         }
 
-        public boolean equals(Object other) {
+        @Override
+      public boolean equals(Object other) {
             return other instanceof Visited && equals((Visited)other);
         }
 
